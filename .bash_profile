@@ -40,8 +40,11 @@ function git-unpushed {
 #   that have been staged for commit, but have not been commited yet.
 #   When this is the case, then it will show a + in the command prompt.
 function git-dirtycommit {
-    st=$(git status --porcelain | head -n 1 | awk '{print $1;}')
-    if [[ $st == "A" ]]
+    st1=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'A ')
+    st2=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'M ')
+    st3=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'D ')
+    st4=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'R ')
+    if [[ $st1 == "A " || $st2 == "M " || $st3 == "D " || $st4 == "R " ]]
     then
         echo "+"
     else
