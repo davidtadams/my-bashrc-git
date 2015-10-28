@@ -17,11 +17,17 @@
 
 #   Functions are for git views in command prompt
 #   ------------------------------------------------------------
+
+#   This function is meant to retrieve the current branch name that you are on
+#   The function will echo out this current branch name
 function git-branch-name
 {
     echo $(git symbolic-ref HEAD --short)
 }
 
+#   This function will find out how many commits behind your remote master
+#   you currently are. In order for this to work, you have to have your repo
+#   connected to an upstream remote.
 function git-unpushed {
     brinfo=$(git branch -v | grep $(git-branch-name))
     if [[ $brinfo =~ ("[ahead "([[:digit:]]*)) ]]
@@ -30,6 +36,9 @@ function git-unpushed {
     fi
 }
 
+#   This function is meant to show when their are changes in the repo
+#   that have been staged for commit, but have not been commited yet.
+#   When this is the case, then it will show a + in the command prompt.
 function git-dirtycommit {
     st=$(git status --porcelain | head -n 1 | awk '{print $1;}')
     if [[ $st == "A" ]]
@@ -40,6 +49,9 @@ function git-dirtycommit {
     fi
 }
 
+#   This function is meant to show when your repo is dirty, meaning that
+#   it has changes that have not been staged for commit. If this is the
+#   case, then it will show an asterisk in the command prompt.
 function git-dirty {
     st=$(git status --porcelain | awk '{print $1;}')
     if [[ $st == "??" ]]
