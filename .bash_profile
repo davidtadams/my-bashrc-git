@@ -74,7 +74,7 @@ function gitify {
     then
         echo ""
     else
-        echo " ("$(git-branch-name)$(git-dirty)$(git-dirtycommit)$(git-unpushed)")"
+        echo " ("$(git-branch-name)$(git-unpushed)$(git-dirty)$(git-dirtycommit)")"
     fi
 }
 
