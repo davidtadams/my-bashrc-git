@@ -56,8 +56,10 @@ function git-dirtycommit {
 #   it has changes that have not been staged for commit. If this is the
 #   case, then it will show an asterisk in the command prompt.
 function git-dirty {
-    st=$(git status --porcelain | awk '{print $1;}')
-    if [[ $st == "??" ]]
+    st1=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep ' M')
+    st2=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep '??')
+    st3=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep ' D')
+    if [[ $st1 == " M" || $st2 == "??" || $st3 == " D" ]]
     then
         echo "*"
     else
