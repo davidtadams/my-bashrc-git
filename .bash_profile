@@ -5,6 +5,10 @@
 #  works for the Bash command prompt. Some of these functions, I re-wrote.
 #  http://bytebaker.com/2012/01/09/show-git-information-in-your-prompt/
 #
+#  This is a link to the Github git status command documentation which was
+#  used in the functions by parsing git status codes.
+#  https://git-scm.com/docs/git-status
+#
 #  This is a good source for a general Bash profile to get started with
 #  https://gist.github.com/natelandau/10654137
 #
@@ -40,11 +44,11 @@ function git-unpushed {
 #   that have been staged for commit, but have not been commited yet.
 #   When this is the case, then it will show a + in the command prompt.
 function git-dirtycommit {
-    st1=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'A ')
-    st2=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'M ')
-    st3=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'D ')
-    st4=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep 'R ')
-    if [[ $st1 == "A " || $st2 == "M " || $st3 == "D " || $st4 == "R " ]]
+    st1=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep -c 'A ')
+    st2=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep -c 'M ')
+    st3=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep -c 'D ')
+    st4=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep -c 'R ')
+    if [[ $st1 > 0 || $st2 > 0 || $st3 > 0 || $st4 > 0 ]]
     then
         echo "+"
     else
@@ -56,10 +60,10 @@ function git-dirtycommit {
 #   it has changes that have not been staged for commit. If this is the
 #   case, then it will show an asterisk in the command prompt.
 function git-dirty {
-    st1=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep ' M')
-    st2=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep '??')
-    st3=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep ' D')
-    if [[ $st1 == " M" || $st2 == "??" || $st3 == " D" ]]
+    st1=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep -c ' M')
+    st2=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep -c '??')
+    st3=$(git status --porcelain | awk '{print substr ($0, 0, 2)}' | grep -c ' D')
+    if [[ $st1 > 0 || $st2 > 0 || $st3 > 0 ]]
     then
         echo "*"
     else
